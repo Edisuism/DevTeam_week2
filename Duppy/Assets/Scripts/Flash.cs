@@ -6,6 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Flash : MonoBehaviour
 {
     public Light2D light;
+    public PolygonCollider2D collider;
 
     private void Start()
     {
@@ -24,25 +25,14 @@ public class Flash : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-        /*
-        void Start()
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ghost"))
         {
-            material = transform.GetComponent<SpriteRenderer>().material;
-            StartCoroutine(FadeTo(0.0f, 1.0f));
+            Dissolve ghost = collision.gameObject.GetComponent<Dissolve>();
+            ghost.Death();
         }
-
-        IEnumerator FadeTo(float aValue, float aTime)
-        {
-            float alpha = material.color.a;
-            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
-            {
-                Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
-                material.color = newColor;
-                yield return null;
-            }
-        }
-        */
-
-
     }
+
+
+}
