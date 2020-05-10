@@ -13,7 +13,7 @@ public class PlayerAudio : MonoBehaviour
     }
 
     //Called from ghost audio
-    public void SendDistance(float ghostDistance, float farDistance)
+    public void AdjustHeartRate(float ghostDistance, float farDistance)
     {
         //Really wanted to use a switch statement here but apparently
         //they don't support ranges. Used IF/ELSE instead

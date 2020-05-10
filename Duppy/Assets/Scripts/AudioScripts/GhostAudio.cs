@@ -45,7 +45,7 @@ public class GhostAudio : MonoBehaviour
                 audioManager.Stop("ghostnoise");
             }
 
-            playerAudio.SendDistance(distanceDifference, (float)GhostDistance.Far);
+            playerAudio.AdjustHeartRate(distanceDifference, (float)GhostDistance.Far);
         }
     }
 
@@ -55,7 +55,11 @@ public class GhostAudio : MonoBehaviour
         {
             audioManager.Play("ghostnoise");
         }
-        audioManager.AdjustGhostVolume("ghostnoise", ((float)GhostDistance.Near - distanceDifference) / (float)GhostDistance.Near);
+
+        //A geometric progression is used to adjust the ghost approach volume
+        //This progression works but it uses the hardcoded numbers 2 and 20
+        float geo = Mathf.Pow(2, (float)GhostDistance.Near - distanceDifference) / 20;
+        audioManager.AdjustGhostVolume("ghostnoise", geo);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
