@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
-    public Slider slider;
+    private Light2D light;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     //public Animator animator;
@@ -16,8 +17,15 @@ public class PlayerController : MonoBehaviour
     private float batteryCap = 100f;
     private float fillSpeed = 1f;
 
+
+    private void Start()
+    {
+        light = GetComponentInChildren<Light2D>();
+    }
+
     void Update()
     {
+        
         movement.x = Input.GetAxis("Horizontal");
         movement.y = Input.GetAxis("Vertical");
 
@@ -25,14 +33,14 @@ public class PlayerController : MonoBehaviour
         //animator.SetFloat("Vertical", movement.y);
         //animator.SetFloat("Speed", movement.sqrMagnitude);
 
-        if (slider.value < battery / batteryCap)
+        if (light.intensity < battery / batteryCap)
         {
-            slider.value += fillSpeed * Time.deltaTime;
+            light.intensity += fillSpeed * Time.deltaTime;
         }
 
-        if (slider.value > battery / batteryCap)
+        if (light.intensity > battery / batteryCap)
         {
-            slider.value -= fillSpeed * Time.deltaTime;
+            light.intensity -= fillSpeed * Time.deltaTime;
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -61,6 +69,8 @@ public class PlayerController : MonoBehaviour
                 //play no battery sound
             }
         }
+
+        battery -= Time.deltaTime;
     }
 
     private void CameraShot(string direction)
@@ -80,6 +90,7 @@ public class PlayerController : MonoBehaviour
                 flashInstantiate = Instantiate(flash, transform.position, Quaternion.Euler(0, 0, 270));
                 break;
         }
+        flashInstantiate.transform.parent = transform;
         battery -= 10;
     }
 
