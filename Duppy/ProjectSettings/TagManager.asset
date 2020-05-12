@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ghost
+  - Ground
+  - Key
   layers:
   - Default
   - TransparentFX

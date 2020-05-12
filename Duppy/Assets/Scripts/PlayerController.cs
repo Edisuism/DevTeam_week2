@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     //public Animator animator;
     public GameObject flash;
     public GameObject flashInstantiate;
+    public bool key1 = false;
+    public bool key2 = false;
+    public bool key3 = false;
     private Vector2 movement;
     private float battery = 100f;
     private float batteryCap = 100f;
@@ -99,4 +102,5 @@ public class PlayerController : MonoBehaviour
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
+
 }
