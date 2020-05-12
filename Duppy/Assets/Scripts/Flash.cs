@@ -31,6 +31,8 @@ public class Flash : MonoBehaviour
         {
             Dissolve ghost = collision.gameObject.GetComponent<Dissolve>();
             ghost.Death();
+            GhostProximity proximity = collision.gameObject.GetComponent<GhostProximity>();
+            proximity.isGhostDead = true;
         }
     }
 
