@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private Light2D light;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
-    //public Animator animator;
+    public Animator animator;
     public GameObject flash;
     public GameObject flashInstantiate;
     public bool key1 = false;
@@ -32,9 +32,9 @@ public class PlayerController : MonoBehaviour
         movement.x = Input.GetAxis("Horizontal");
         movement.y = Input.GetAxis("Vertical");
 
-        //animator.SetFloat("Horizontal", movement.x);
-        //animator.SetFloat("Vertical", movement.y);
-        //animator.SetFloat("Speed", movement.sqrMagnitude);
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
 
         if (light.intensity < battery / batteryCap)
         {
