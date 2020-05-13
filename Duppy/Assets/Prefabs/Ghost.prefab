@@ -156,4 +156,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce00aef911d9be4fa55c9df203e1c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostDistance: 0
+  ghostSpeed: 0.1
+  farDistance: 8
+  middleDistance: 6
+  nearDistance: 4
+  closebyDistance: 2
+  onTargetDistance: 0
+  isGhostDead: 0

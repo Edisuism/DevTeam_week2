@@ -4,11 +4,26 @@ using UnityEngine;
 
 public class GhostProximity : MonoBehaviour
 {
-    public enum GhostDistance { Far = 8, Middle = 6, Near = 4, Closeby = 2, OnTarget = 0}
+    //Set in Inspector
+    public float ghostSpeed;
+    public float farDistance, middleDistance, nearDistance, closebyDistance, onTargetDistance;
+
+    public struct GhostDistance { 
+        public float Far;
+        public float Middle;
+        public float Near;
+        public float Closeby;
+        public float OnTarget;
+    }
     public GhostDistance ghostDistance;
+
+    //currentDistanceState is used to check the distance state (i.e. closeby, far)
+    //For the exact distance number, use distanceDifference
+    private float currentDistanceState;
     public bool isGhostDead = false;
 
     private GameObject targetObject;
+    //Finds the exact difference between the player and ghost
     private float distanceDifference;
 
     private AudioManager audioManager;
@@ -16,15 +31,21 @@ public class GhostProximity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ghostDistance.Far = farDistance;
+        ghostDistance.Middle = middleDistance;
+        ghostDistance.Near = nearDistance;
+        ghostDistance.Closeby = closebyDistance;
+        ghostDistance.OnTarget = onTargetDistance;
+
         audioManager = FindObjectOfType<AudioManager>();
         targetObject = GameObject.FindGameObjectWithTag("Player");
-        ghostDistance = GhostDistance.Far;
+        currentDistanceState = ghostDistance.Far;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ghostDistance != GhostDistance.OnTarget && !isGhostDead)
+        if (currentDistanceState != ghostDistance.OnTarget && !isGhostDead)
             CheckDistance();
         else {
             StopGhostNoises();
@@ -38,10 +59,10 @@ public class GhostProximity : MonoBehaviour
     //If the ghost touches the player
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == targetObject && ghostDistance != GhostDistance.OnTarget)
+        if (collision.gameObject == targetObject && currentDistanceState != ghostDistance.OnTarget)
         {
             //TODO: CALL PLAYER CONTROLLER AND FREEZE THE PLAYER
-            ghostDistance = GhostDistance.OnTarget;
+            currentDistanceState = ghostDistance.OnTarget;
             StopGhostNoises();
             audioManager.Play("playercaught");
         }
@@ -51,46 +72,51 @@ public class GhostProximity : MonoBehaviour
     {
         distanceDifference = Vector3.Distance(targetObject.transform.position, this.gameObject.transform.position);
 
-        if (distanceDifference < (float)GhostDistance.Closeby)
-            PerformDistanceFunctions(GhostDistance.Closeby);
-        else if (distanceDifference < (float)GhostDistance.Near)
-            PerformDistanceFunctions(GhostDistance.Near);
-        else if (distanceDifference < (float)GhostDistance.Middle)
+        if (distanceDifference < (float)ghostDistance.Closeby)
+            PerformDistanceFunctions("Closeby");
+        else if (distanceDifference < (float)ghostDistance.Near)
+            PerformDistanceFunctions("Near");
+        else if (distanceDifference < (float)ghostDistance.Middle)
         {
             //TODO: CALL GHOST AI TO START CHASING THE PLAYER
-            PerformDistanceFunctions(GhostDistance.Middle);
+            PerformDistanceFunctions("Middle");
         } 
         else
-            PerformDistanceFunctions(GhostDistance.Far);
+            PerformDistanceFunctions("Far");
     }
 
     //Plays a set of functions like audio noises based on the ghost's distance from the player
-    private void PerformDistanceFunctions(GhostDistance newDistanceState)
+    private void PerformDistanceFunctions(string newDistanceState)
     {
         //Depending on the ghost proximity to the player
         //Play the heart beat sound and ghos noises
         switch (newDistanceState) {
-            case GhostDistance.Closeby:
+            case "Closeby":
                 PlayGhostNoise();
+                transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
                 audioManager.PlayHeartBeat("rapidbeat");
+                currentDistanceState = ghostDistance.Closeby;
                 break;
-            case GhostDistance.Near:
+            case "Near":
                 PlayGhostNoise();
+                transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
                 audioManager.PlayHeartBeat("fastbeat");
+                currentDistanceState = ghostDistance.Near;
                 break;
-            case GhostDistance.Middle:
+            case "Middle":
                 audioManager.Stop("ghostnoise");
                 audioManager.PlayHeartBeat("slowbeat");
+                currentDistanceState = ghostDistance.Middle;
                 break;
-            case GhostDistance.Far:
+            case "Far":
                 StopGhostNoises();
+                currentDistanceState = ghostDistance.Far;
                 break;
             default:
                 Debug.LogWarning("Warning: Player distance state could not be detected!");
                 break;
         }
 
-        ghostDistance = newDistanceState;
     }
 
     //Plays the spooky ghost approach noise
@@ -103,7 +129,7 @@ public class GhostProximity : MonoBehaviour
 
         //A geometric progression is used to adjust the ghost approach volume
         //This progression works but it uses the hardcoded numbers 2 and 20
-        float geo = Mathf.Pow(2, (float)GhostDistance.Near - distanceDifference) / 20;
+        float geo = Mathf.Pow(2, (float)ghostDistance.Near - distanceDifference) / 20;
         audioManager.AdjustGhostVolume("ghostnoise", geo);
     }
 
