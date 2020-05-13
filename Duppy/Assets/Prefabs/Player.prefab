@@ -207,6 +207,9 @@ MonoBehaviour:
   rb: {fileID: 6654274684915717192}
   flash: {fileID: 7499158287967096918, guid: bbf46cc31f62f934bab74a4a904e3b40, type: 3}
   flashInstantiate: {fileID: 0}
+  key1: 0
+  key2: 0
+  key3: 0
 --- !u!70 &1997278962685055402
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -217,7 +220,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

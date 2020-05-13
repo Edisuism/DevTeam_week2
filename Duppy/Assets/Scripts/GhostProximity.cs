@@ -21,6 +21,7 @@ public class GhostProximity : MonoBehaviour
     //For the exact distance number, use distanceDifference
     private float currentDistanceState;
     public bool isGhostDead = false;
+    public bool chasingPlayer = false;
 
     private GameObject targetObject;
     //Finds the exact difference between the player and ghost
@@ -47,6 +48,10 @@ public class GhostProximity : MonoBehaviour
     {
         if (currentDistanceState != ghostDistance.OnTarget && !isGhostDead)
             CheckDistance();
+            if(chasingPlayer)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
+            }
         else {
             StopGhostNoises();
             if (isGhostDead && !audioManager.IsPlaying("ghostdeath"))
@@ -89,22 +94,23 @@ public class GhostProximity : MonoBehaviour
     private void PerformDistanceFunctions(string newDistanceState)
     {
         //Depending on the ghost proximity to the player
-        //Play the heart beat sound and ghos noises
+        //Play the heart beat sound and ghost noises
         switch (newDistanceState) {
             case "Closeby":
                 PlayGhostNoise();
-                transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
+                chasingPlayer = true;
                 audioManager.PlayHeartBeat("rapidbeat");
                 currentDistanceState = ghostDistance.Closeby;
                 break;
             case "Near":
                 PlayGhostNoise();
-                transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
+                chasingPlayer = true;
                 audioManager.PlayHeartBeat("fastbeat");
                 currentDistanceState = ghostDistance.Near;
                 break;
             case "Middle":
                 audioManager.Stop("ghostnoise");
+                chasingPlayer = true;
                 audioManager.PlayHeartBeat("slowbeat");
                 currentDistanceState = ghostDistance.Middle;
                 break;
