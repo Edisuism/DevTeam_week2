@@ -22,12 +22,14 @@ public class PlayerController : MonoBehaviour
     private float batteryCap = 100f;
     private float fillSpeed = 1f;
     public GameManager gameManager;
+    public PlayerAudio playerAudio;
 
 
     private void Start()
     {
         light = GetComponentInChildren<Light2D>();
         gameManager = FindObjectOfType<GameManager>();
+        playerAudio = GetComponent<PlayerAudio>();
     }
 
     void Update()
@@ -37,6 +39,9 @@ public class PlayerController : MonoBehaviour
             //TODO: Play footstep sounds
             movement.x = Input.GetAxis("Horizontal");
             movement.y = Input.GetAxis("Vertical");
+
+            //The false part is used to play normal foot steps, not webbed footsteps
+            playerAudio.PlayFootSteps(false);
         }
         else if(!isAlive)
         {
@@ -51,6 +56,7 @@ public class PlayerController : MonoBehaviour
             //TODO: Play sticky sounds
             movement.x = Input.GetAxis("Horizontal") * 0.2f;
             movement.y = Input.GetAxis("Vertical") * 0.2f;
+            playerAudio.PlayFootSteps(true);
         }
 
         animator.SetFloat("Horizontal", movement.x);

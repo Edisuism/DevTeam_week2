@@ -104,4 +104,28 @@ public class PlayerAudio : MonoBehaviour
     {
         return audioManager.IsPlaying("ghostdeath");
     }
+
+    //Footstep functions are called from Player Controller
+    public void PlayFootSteps(bool isWebbed)
+    {
+        //See if player is moving (rb velocity didn't seem to change)
+        if(Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Vertical") > 0.5f ||
+            Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("Vertical") < -0.5f)
+        {
+            if(isWebbed)
+            {
+                if(!audioManager.IsPlaying("webstep"))
+                {
+                    audioManager.Play("webstep");
+                }
+            }
+            else
+            {
+                if(!audioManager.IsPlaying("footstep"))
+                {
+                    audioManager.Play("footstep");
+                }
+            }
+        }   
+    }
 }
