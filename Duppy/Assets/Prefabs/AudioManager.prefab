@@ -128,7 +128,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: footstep
     clip: {fileID: 8300000, guid: 6f970b855da353947b97d388d09edd73, type: 3}
-    volume: 0.05
+    volume: 0.1
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -137,7 +137,52 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: webstep
     clip: {fileID: 8300000, guid: 5d732651cb3b3f948b5105b380437d42, type: 3}
-    volume: 0.08
+    volume: 0.15
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: startcharge
+    clip: {fileID: 8300000, guid: ed1fbc4983b994446b6732e332cf26d2, type: 3}
+    volume: 0.5
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: charging
+    clip: {fileID: 8300000, guid: de4547a9e3b0d5d40a77eebd555b2fef, type: 3}
+    volume: 0.05
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: finishcharging
+    clip: {fileID: 8300000, guid: a2018c35334c8ae4c9099fe1dc997fd4, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: unplug
+    clip: {fileID: 8300000, guid: f4809a70781f2d9409408d19cfbb3ae3, type: 3}
+    volume: 0.7
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: shutdown
+    clip: {fileID: 8300000, guid: 8eca1bd1a21be474aa15740aa87276e7, type: 3}
+    volume: 0.5
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0

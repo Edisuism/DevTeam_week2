@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     public bool isAlive = true;
     public bool isCobwebbed = false;
     private Vector2 movement;
-    private float battery = 100f;
-    private float batteryCap = 100f;
+    public float battery = 100f;
+    public float batteryCap = 100f;
     private float fillSpeed = 1f;
     public GameManager gameManager;
     public PlayerAudio playerAudio;
