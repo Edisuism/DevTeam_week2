@@ -6,15 +6,7 @@ public class GhostProximity : MonoBehaviour
 {
     //Set in Inspector
     public float ghostSpeed;
-    public float farDistance, middleDistance, nearDistance, closebyDistance, onTargetDistance;
 
-    public struct GhostDistance { 
-        public float Far;
-        public float Middle;
-        public float Near;
-        public float Closeby;
-        public float OnTarget;
-    }
     public GhostDistance ghostDistance;
 
     //currentDistanceState is used to check the distance state (i.e. closeby, far)
@@ -22,60 +14,61 @@ public class GhostProximity : MonoBehaviour
     private float currentDistanceState;
     public bool isGhostDead = false;
     public bool chasingPlayer = false;
+    //Used so that the ghost isn't added multiple times to the playerAudio list
+    private bool enteredDetectionDistance = false;
 
     private GameObject targetObject;
     //Finds the exact difference between the player and ghost
     private float distanceDifference;
 
-    private AudioManager audioManager;
+    private PlayerAudio playerAudio;
 
     // Start is called before the first frame update
     void Start()
     {
-        ghostDistance.Far = farDistance;
-        ghostDistance.Middle = middleDistance;
-        ghostDistance.Near = nearDistance;
-        ghostDistance.Closeby = closebyDistance;
-        ghostDistance.OnTarget = onTargetDistance;
+        ghostDistance = GetComponent<GhostDistance>();
 
-        audioManager = FindObjectOfType<AudioManager>();
         targetObject = GameObject.FindGameObjectWithTag("Player");
+        playerAudio = targetObject.GetComponent<PlayerAudio>();
         currentDistanceState = ghostDistance.Far;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (currentDistanceState != ghostDistance.OnTarget && !isGhostDead)
+    {   
+        if (currentDistanceState != ghostDistance.OnTarget && !isGhostDead){
             CheckDistance();
             if(chasingPlayer)
             {
                 transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, ghostSpeed);
             }
+        }
         else {
-            StopGhostNoises();
-            if (isGhostDead && !audioManager.IsPlaying("ghostdeath"))
+            playerAudio.StopGhostNoises(this.gameObject, true);
+            if (isGhostDead && !playerAudio.CheckGhostDeath())
             {
-                audioManager.Play("ghostdeath");
+                playerAudio.RemoveFromGhostList(this.gameObject);
+                playerAudio.GhostDeath();
             }
         }
     }
 
     //If the ghost touches the player
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == targetObject && currentDistanceState != ghostDistance.OnTarget)
         {
             //TODO: CALL PLAYER CONTROLLER AND FREEZE THE PLAYER
             currentDistanceState = ghostDistance.OnTarget;
-            StopGhostNoises();
-            audioManager.Play("playercaught");
+            playerAudio.StopGhostNoises(this.gameObject, true);
+            playerAudio.PlayerCaught();
+            
         }
     }
 
     private void CheckDistance()
     {
-        distanceDifference = Vector3.Distance(targetObject.transform.position, this.gameObject.transform.position);
+        distanceDifference = Vector2.Distance(targetObject.transform.position, this.gameObject.transform.position);
 
         if (distanceDifference < (float)ghostDistance.Closeby)
             PerformDistanceFunctions("Closeby");
@@ -97,25 +90,33 @@ public class GhostProximity : MonoBehaviour
         //Play the heart beat sound and ghost noises
         switch (newDistanceState) {
             case "Closeby":
-                PlayGhostNoise();
+                playerAudio.PlayGhostNoise(this.gameObject, (float)ghostDistance.Near);
                 chasingPlayer = true;
-                audioManager.PlayHeartBeat("rapidbeat");
+                playerAudio.Heartbeat(this.gameObject, "rapidbeat");
                 currentDistanceState = ghostDistance.Closeby;
                 break;
             case "Near":
-                PlayGhostNoise();
+                playerAudio.PlayGhostNoise(this.gameObject, (float)ghostDistance.Near);
                 chasingPlayer = true;
-                audioManager.PlayHeartBeat("fastbeat");
+                playerAudio.Heartbeat(this.gameObject, "fastbeat");
                 currentDistanceState = ghostDistance.Near;
                 break;
             case "Middle":
-                audioManager.Stop("ghostnoise");
+                if(!enteredDetectionDistance){
+                    enteredDetectionDistance = true;
+                    playerAudio.AddToGhostList(this.gameObject);
+                }
+                playerAudio.StopGhostNoises(this.gameObject, false);
                 chasingPlayer = true;
-                audioManager.PlayHeartBeat("slowbeat");
+                playerAudio.Heartbeat(this.gameObject, "slowbeat");
                 currentDistanceState = ghostDistance.Middle;
                 break;
             case "Far":
-                StopGhostNoises();
+                if(enteredDetectionDistance){
+                    enteredDetectionDistance = false;
+                    playerAudio.RemoveFromGhostList(this.gameObject);
+                }
+                playerAudio.StopGhostNoises(this.gameObject, true);
                 currentDistanceState = ghostDistance.Far;
                 break;
             default:
@@ -124,25 +125,5 @@ public class GhostProximity : MonoBehaviour
         }
 
     }
-
-    //Plays the spooky ghost approach noise
-    private void PlayGhostNoise()
-    {
-        if (!audioManager.IsPlaying("ghostnoise"))
-        {
-            audioManager.Play("ghostnoise");
-        }
-
-        //A geometric progression is used to adjust the ghost approach volume
-        //This progression works but it uses the hardcoded numbers 2 and 20
-        float geo = Mathf.Pow(2, (float)ghostDistance.Near - distanceDifference) / 20;
-        audioManager.AdjustGhostVolume("ghostnoise", geo);
-    }
-
-    //Stop all ghost noises and heartbeat
-    private void StopGhostNoises()
-    {
-        audioManager.Stop("ghostnoise");
-        audioManager.PlayHeartBeat("stop");
-    }
+    
 }
