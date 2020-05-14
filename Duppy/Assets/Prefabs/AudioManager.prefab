@@ -126,3 +126,21 @@ MonoBehaviour:
     loop: 0
     mixerGroup: {fileID: 0}
     source: {fileID: 0}
+  - name: footstep
+    clip: {fileID: 8300000, guid: 6f970b855da353947b97d388d09edd73, type: 3}
+    volume: 0.05
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - name: webstep
+    clip: {fileID: 8300000, guid: 5d732651cb3b3f948b5105b380437d42, type: 3}
+    volume: 0.08
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
