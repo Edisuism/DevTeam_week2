@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour
     public bool isAlive = true;
     public bool isCobwebbed = false;
     private Vector2 movement;
-    private float battery = 100f;
-    private float batteryCap = 100f;
+    public float battery = 100f;
+    public float batteryCap = 100f;
     private float fillSpeed = 1f;
     public GameManager gameManager;
     public PlayerAudio playerAudio;
+    public GameObject deathVines;
+    public bool vinesSummoned = false;
     private float lastdirx, lastdiry;
 
     private void Start()
@@ -52,6 +54,14 @@ public class PlayerController : MonoBehaviour
             movement.y = 0;
             AnimationHandle(new Vector2 (0, -1));
             gameManager.GameOver();
+            
+            if(!vinesSummoned)
+            {
+                vinesSummoned = true;
+                battery = 0;
+                StartCoroutine("SummonDeathVines");
+            }
+            
         }
         else if(isCobwebbed)
         {
@@ -155,6 +165,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    IEnumerator SummonDeathVines()
+    {
+        yield return new WaitForSeconds(4.0f);
+        battery = 20.0f;
+        deathVines.SetActive(true);
     }
 
 }
