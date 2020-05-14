@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public bool key2 = false;
     public bool key3 = false;
     public bool isAlive = true;
+    public bool isCobwebbed = false;
     private Vector2 movement;
     private float battery = 100f;
     private float batteryCap = 100f;
@@ -31,18 +32,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if(isAlive)
+        if(isAlive && !isCobwebbed)
         {
+            //TODO: Play footstep sounds
             movement.x = Input.GetAxis("Horizontal");
             movement.y = Input.GetAxis("Vertical");
         }
-        else
+        else if(!isAlive)
         {
             //Freeze movement
             movement.x = 0;
             movement.y = 0;
             
             gameManager.GameOver();
+        }
+        else if(isCobwebbed)
+        {
+            //TODO: Play sticky sounds
+            movement.x = Input.GetAxis("Horizontal") * 0.2f;
+            movement.y = Input.GetAxis("Vertical") * 0.2f;
         }
 
         //animator.SetFloat("Horizontal", movement.x);
