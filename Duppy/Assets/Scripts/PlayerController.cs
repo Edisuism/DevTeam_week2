@@ -15,22 +15,35 @@ public class PlayerController : MonoBehaviour
     public bool key1 = false;
     public bool key2 = false;
     public bool key3 = false;
+    public bool isAlive = true;
     private Vector2 movement;
     private float battery = 100f;
     private float batteryCap = 100f;
     private float fillSpeed = 1f;
+    public GameManager gameManager;
 
 
     private void Start()
     {
         light = GetComponentInChildren<Light2D>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
     {
-        
-        movement.x = Input.GetAxis("Horizontal");
-        movement.y = Input.GetAxis("Vertical");
+        if(isAlive)
+        {
+            movement.x = Input.GetAxis("Horizontal");
+            movement.y = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            //Freeze movement
+            movement.x = 0;
+            movement.y = 0;
+            
+            gameManager.GameOver();
+        }
 
         //animator.SetFloat("Horizontal", movement.x);
         //animator.SetFloat("Vertical", movement.y);

@@ -65,6 +65,7 @@ public class PlayerAudio : MonoBehaviour
     public void PlayerCaught()
     {
         audioManager.Play("playercaught");
+        GetComponent<PlayerController>().isAlive = false;
     }
 
     //Plays the spooky ghost approach noise
