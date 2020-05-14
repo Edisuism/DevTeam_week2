@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private float fillSpeed = 1f;
     public GameManager gameManager;
     public PlayerAudio playerAudio;
-
+    private float lastdirx, lastdiry;
 
     private void Start()
     {
@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
             movement.x = Input.GetAxis("Horizontal");
             movement.y = Input.GetAxis("Vertical");
 
+            AnimationHandle(movement);
+
             //The false part is used to play normal foot steps, not webbed footsteps
             playerAudio.PlayFootSteps(false);
         }
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
             //Freeze movement
             movement.x = 0;
             movement.y = 0;
-            
+            AnimationHandle(new Vector2 (0, -1));
             gameManager.GameOver();
         }
         else if(isCobwebbed)
@@ -59,9 +61,9 @@ public class PlayerController : MonoBehaviour
             playerAudio.PlayFootSteps(true);
         }
 
-        animator.SetFloat("Horizontal", movement.x);
-        animator.SetFloat("Vertical", movement.y);
-        animator.SetFloat("Speed", movement.sqrMagnitude);
+        //animator.SetFloat("Horizontal", movement.x);
+        //animator.SetFloat("Vertical", movement.y);
+       // animator.SetFloat("Speed", movement.sqrMagnitude);
 
         if (light.intensity < battery / batteryCap)
         {
@@ -101,6 +103,31 @@ public class PlayerController : MonoBehaviour
         }
 
         battery -= Time.deltaTime;
+    }
+
+    private void AnimationHandle(Vector2 movement)
+    {
+        if (movement.x != 0)
+        {
+            lastdirx = movement.x;
+        }
+        animator.SetFloat("Horizontal", movement.x);
+        if (movement.y != 0)
+        {
+            lastdiry = movement.y;
+            if (movement.x == 0)
+            {
+                lastdirx = 0;
+            }
+        }
+        animator.SetFloat("Vertical", movement.y);
+        if (movement.x == 0 && movement.y == 0)
+        {
+            animator.SetFloat("Horizontal", lastdirx);
+            animator.SetFloat("Vertical", lastdiry);
+        }
+        float s = Mathf.Abs(movement.x) + Mathf.Abs(movement.y);
+        animator.SetFloat("Speed", s);
     }
 
     private void CameraShot(string direction)
