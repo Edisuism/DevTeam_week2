@@ -9,13 +9,14 @@ public class PlayerController : MonoBehaviour
     private Light2D light;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
-    //public Animator animator;
+    public Animator animator;
     public GameObject flash;
     public GameObject flashInstantiate;
     public bool key1 = false;
     public bool key2 = false;
     public bool key3 = false;
     public bool isAlive = true;
+    public bool isCobwebbed = false;
     private Vector2 movement;
     private float battery = 100f;
     private float batteryCap = 100f;
@@ -31,12 +32,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if(isAlive)
+        if(isAlive && !isCobwebbed)
         {
+            //TODO: Play footstep sounds
             movement.x = Input.GetAxis("Horizontal");
             movement.y = Input.GetAxis("Vertical");
         }
-        else
+        else if(!isAlive)
         {
             //Freeze movement
             movement.x = 0;
@@ -44,10 +46,16 @@ public class PlayerController : MonoBehaviour
             
             gameManager.GameOver();
         }
+        else if(isCobwebbed)
+        {
+            //TODO: Play sticky sounds
+            movement.x = Input.GetAxis("Horizontal") * 0.2f;
+            movement.y = Input.GetAxis("Vertical") * 0.2f;
+        }
 
-        //animator.SetFloat("Horizontal", movement.x);
-        //animator.SetFloat("Vertical", movement.y);
-        //animator.SetFloat("Speed", movement.sqrMagnitude);
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
 
         if (light.intensity < battery / batteryCap)
         {
