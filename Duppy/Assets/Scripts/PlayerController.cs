@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        battery -= Time.deltaTime;
+        battery -= Time.deltaTime / 4;
     }
 
     private void AnimationHandle(Vector2 movement)
