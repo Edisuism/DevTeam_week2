@@ -221,6 +221,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   playerAudio: {fileID: 0}
   deathVines: {fileID: 8631621877687700433}
+  vinesSummoned: 0
 --- !u!70 &1997278962685055402
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -284,17 +285,22 @@ PrefabInstance:
     - target: {fileID: 3714348023982498693, guid: db02ae11a87cf6f41aa9e8435f2fd3e4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3714348023982498695, guid: db02ae11a87cf6f41aa9e8435f2fd3e4,
         type: 3}
       propertyPath: m_SortingLayerID
-      value: 1412581145
+      value: 2041101919
       objectReference: {fileID: 0}
     - target: {fileID: 3714348023982498695, guid: db02ae11a87cf6f41aa9e8435f2fd3e4,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714348023982498695, guid: db02ae11a87cf6f41aa9e8435f2fd3e4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3714348023982498696, guid: db02ae11a87cf6f41aa9e8435f2fd3e4,
         type: 3}
