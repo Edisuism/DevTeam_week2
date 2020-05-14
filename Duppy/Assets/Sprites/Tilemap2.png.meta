@@ -290,6 +290,9 @@ TextureImporter:
   - first:
       213: -2235970448730570887
     second: Tilemap2_95
+  - first:
+      213: 5133688021542242988
+    second: Tilemap2_0
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
