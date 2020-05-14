@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4172860336643636109}
   - component: {fileID: 3640329736684904705}
   - component: {fileID: 572531981365623816}
+  - component: {fileID: 1125696931}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Ghost
@@ -75,7 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 2041101919
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -3973596750242006601, guid: b3273b69aca0f2c4bae9a13e4d954bc9,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,9 +124,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.3, y: 0.48}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -178,3 +180,22 @@ MonoBehaviour:
   Near: 4
   Closeby: 2
   OnTarget: 0
+--- !u!95 &1125696931
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4172860336643636114}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5a47fe35d733ca443bb83de54252074e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
